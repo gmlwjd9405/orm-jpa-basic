@@ -19,11 +19,9 @@ public class JpaMain {
 
         try {
             /* code 작성 */
-            Member member = new Member();
-            member.setId(1L);
-            member.setName("HelloA");
-
-            entityManager.persist(member); // save
+            Member findMember = entityManager.find(Member.class, 1L); // select
+            System.out.println("findMember.id = " + findMember.getId());
+            System.out.println("findMember.name = " + findMember.getName());
 
             tx.commit();
         } catch (Exception e) {
