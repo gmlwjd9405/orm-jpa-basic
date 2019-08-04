@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
 
@@ -22,14 +23,14 @@ public class JpaMain {
 
         try {
             /* code 작성 */
-            Member findMember = entityManager.find(Member.class, 1L); // select
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.name = " + findMember.getName());
-
-            findMember.setName("changeName"); // update
-//            entityManager.persist(findMember); // update 시 불필요 (transaction commit 전에 변경사항을 모두 확인하여 update 하기 때문)
-
-//            entityManager.remove(findMember); // delete
+            // JPQL(SQL 을 추상화한 객체 지향 쿼리 언어) 사용: 테이블이 아닌 "Entity 객체"를 대상으로 검색
+            List<Member> result = entityManager.createQuery("select m from Member as m", Member.class)
+                    .setFirstResult(5) // 5번부터
+                    .setMaxResults(8) // 8개 가져오기 (페이징)
+                    .getResultList();
+            for (Member member : result) {
+                System.out.println("member.getName() = " + member.getName());
+            }
 
             tx.commit();
         } catch (Exception e) {
