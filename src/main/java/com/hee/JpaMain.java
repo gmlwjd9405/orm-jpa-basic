@@ -22,21 +22,15 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 비영속 상태
-            Member member = new Member();
-            member.setId(101L);
-            member.setName("HelloJPA");
-
             // 영속 상태 (Persistence Context 에 의해 Entity 가 관리되는 상태)
-            System.out.println("--- Before");
-            entityManager.persist(member); // DB 저장 X, 1차 캐시에 저장됨
-            System.out.println("--- After");
+            Member member1 = new Member(150L, "A");
+            Member member2 = new Member(160L, "B");
 
-            // 1차 캐시에서 조회
-            Member findMember = entityManager.find(Member.class, 101L); // 1차 캐시에서 조회
-            System.out.println("findMember = " + findMember.getId());
+            entityManager.persist(member1);
+            entityManager.persist(member2);
+            System.out.println("------------------");
 
-            tx.commit();
+            tx.commit(); // DB에 insert query 가 날라가는 시점 
         } catch (Exception e) {
             tx.rollback();
         } finally {
