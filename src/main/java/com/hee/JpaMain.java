@@ -22,15 +22,17 @@ public class JpaMain {
         tx.begin();
 
         try {
-            /* code 작성 */
-            // JPQL(SQL 을 추상화한 객체 지향 쿼리 언어) 사용: 테이블이 아닌 "Entity 객체"를 대상으로 검색
-            List<Member> result = entityManager.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5) // 5번부터
-                    .setMaxResults(8) // 8개 가져오기 (페이징)
-                    .getResultList();
-            for (Member member : result) {
-                System.out.println("member.getName() = " + member.getName());
-            }
+            // 비영속 상태
+            Member member = new Member();
+            member.setId(100L);
+            member.setName("HelloJPA");
+
+            // 영속 상태 (Persistence Context 에 의해 Entity 가 관리되는 상태)
+            System.out.println("--- Before");
+            entityManager.persist(member); // DB 저장 X
+            entityManager.detach(member); // 준영속 상태: 영속성 컨텍스트에서 분리한 상태
+            entityManager.remove(member); // 삭제 상태: 실제 DB 삭제를 요청한 상태
+            System.out.println("--- After");
 
             tx.commit();
         } catch (Exception e) {
