@@ -23,14 +23,11 @@ public class JpaMain {
 
         try {
             // 영속 상태 (Persistence Context 에 의해 Entity 가 관리되는 상태)
-            Member member1 = new Member(150L, "A");
-            Member member2 = new Member(160L, "B");
+            Member member = entityManager.find(Member.class, 150L);
+            member.setName("zzzz"); // 값 변경
+//            entityManager.persist(member); // 사용 X
 
-            entityManager.persist(member1);
-            entityManager.persist(member2);
-            System.out.println("------------------");
-
-            tx.commit(); // DB에 insert query 가 날라가는 시점 
+            tx.commit(); // DB에 insert query 가 날라가는 시점
         } catch (Exception e) {
             tx.rollback();
         } finally {
