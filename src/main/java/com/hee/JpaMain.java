@@ -24,15 +24,17 @@ public class JpaMain {
         try {
             // 비영속 상태
             Member member = new Member();
-            member.setId(100L);
+            member.setId(101L);
             member.setName("HelloJPA");
 
             // 영속 상태 (Persistence Context 에 의해 Entity 가 관리되는 상태)
             System.out.println("--- Before");
-            entityManager.persist(member); // DB 저장 X
-            entityManager.detach(member); // 준영속 상태: 영속성 컨텍스트에서 분리한 상태
-            entityManager.remove(member); // 삭제 상태: 실제 DB 삭제를 요청한 상태
+            entityManager.persist(member); // DB 저장 X, 1차 캐시에 저장됨
             System.out.println("--- After");
+
+            // 1차 캐시에서 조회
+            Member findMember = entityManager.find(Member.class, 101L); // 1차 캐시에서 조회
+            System.out.println("findMember = " + findMember.getId());
 
             tx.commit();
         } catch (Exception e) {
