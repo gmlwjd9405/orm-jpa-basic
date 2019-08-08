@@ -23,13 +23,12 @@ public class JpaMain {
 
         try {
             // 영속 상태 (Persistence Context 에 의해 Entity 가 관리되는 상태)
-            Member member = new Member(200L, "A");
-            entityManager.persist(member);
+            Member findMember = entityManager.find(Member.class, 150L);
+            findMember.setName("AAAAA");
 
-            entityManager.flush(); // 강제 호출 (쿼리가 DB 에 반영됨)
+            entityManager.detach(findMember); // 영속성 컨텍스트에서 떼넨다. (더 이상 JPA 의 관리 대상이 아님.)
 
-            System.out.println("DB INSERT Query 가 즉시 나감. -- flush() 호출 후 --  Transaction commit 됨.");
-            tx.commit(); // DB에 insert query 가 날라가는 시점 (Transaction commit)
+            tx.commit(); // DB에 insert query 가 날라가는 시점 (아무일도 발생하지 않음.)
         } catch (Exception e) {
             tx.rollback();
         } finally {
