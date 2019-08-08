@@ -26,7 +26,9 @@ public class JpaMain {
             Member findMember = entityManager.find(Member.class, 150L);
             findMember.setName("AAAAA");
 
-            entityManager.detach(findMember); // 영속성 컨텍스트에서 떼넨다. (더 이상 JPA 의 관리 대상이 아님.)
+            entityManager.clear(); // 영속성 컨텍스트를 완전히 초기화
+
+            Member findMember2 = entityManager.find(Member.class, 150L); // 같은 Entity 를 다시 조회
 
             tx.commit(); // DB에 insert query 가 날라가는 시점 (아무일도 발생하지 않음.)
         } catch (Exception e) {
