@@ -23,11 +23,13 @@ public class JpaMain {
 
         try {
             // 영속 상태 (Persistence Context 에 의해 Entity 가 관리되는 상태)
-            Member member = entityManager.find(Member.class, 150L);
-            member.setName("zzzz"); // 값 변경
-//            entityManager.persist(member); // 사용 X
+            Member member = new Member(200L, "A");
+            entityManager.persist(member);
 
-            tx.commit(); // DB에 insert query 가 날라가는 시점
+            entityManager.flush(); // 강제 호출 (쿼리가 DB 에 반영됨)
+
+            System.out.println("DB INSERT Query 가 즉시 나감. -- flush() 호출 후 --  Transaction commit 됨.");
+            tx.commit(); // DB에 insert query 가 날라가는 시점 (Transaction commit)
         } catch (Exception e) {
             tx.rollback();
         } finally {
