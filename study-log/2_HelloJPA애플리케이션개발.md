@@ -1,3 +1,4 @@
+# 2. JPA 시작하기 
 ## Hello JPA - 애플리케이션 개발 
 - **EntityManagerFactory**
     - JPA 는 EntityManagerFactory 를 만들어야 한다.
