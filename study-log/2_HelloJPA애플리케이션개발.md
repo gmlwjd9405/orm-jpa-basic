@@ -48,6 +48,8 @@
     </persistence-unit>
 </persistence>
 ```
+- javax: 다른 JPA 구현체를 사용하더라도 그대로 사용이 가능하다. (표준)
+- hibernate: 하이버네이트에 종속적이다. (hibernate 전용 옵션)
 
 ### 기본적인 JPA 사용 코드 
 ```java
